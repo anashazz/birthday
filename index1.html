@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Time left till my Birthday</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Configure Tailwind for the "Inter" font -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['comfortaa', 'sans-serif'],
+                    },
+                    colors: {
+                        'primary-blue': '#4c74f5',
+                        'dark-bg': '#0f172a',
+                        'dark-card': '#1e293b',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Custom styles for the font */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+    </style>
+</head>
+<!-- The h-screen class ensures the body uses the entire viewport height for a full-screen, centered effect. -->
+<body class="bg-dark-bg text-white font-sans h-screen flex items-center justify-center p-4">
+
+    <!-- Main Container -->
+    <div class="w-full max-w-xl bg-dark-card p-8 md:p-10 rounded-2xl shadow-2xl border border-slate-700">
+        
+        <h1 id="main-title" class="text-3xl md:text-4xl font-extrabold text-center mb-2 text-primary-blue">
+            Time left till my Birthday
+        </h1>
+        <p id="main-subtitle" class="text-center text-slate-400 mb-8 md:mb-10">
+            The next milestone is just around the corner!
+        </p>
+
+        <!-- Birthday Message (Initially Hidden) -->
+        <div id="birthday-message" class="text-center p-8 bg-pink-600 rounded-xl shadow-2xl hidden">
+            <p class="text-4xl md:text-5xl font-extrabold text-white mb-2">IT'S MY BIRTHDAY!</p>
+            <p class="text-6xl md:text-7xl">🎉🎂🎁🥳</p>
+        </div>
+
+        <!-- Countdown Display Grid -->
+        <div id="countdown-display" class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+            
+            <!-- Days -->
+            <div class="text-center p-4 bg-slate-800 rounded-xl shadow-lg transition duration-300 hover:scale-[1.02] transform">
+                <div id="days" class="text-4xl md:text-5xl font-mono font-bold text-yellow-300">000</div>
+                <div class="text-sm uppercase tracking-wider mt-1 text-slate-400">Days</div>
+            </div>
+
+            <!-- Hours -->
+            <div class="text-center p-4 bg-slate-800 rounded-xl shadow-lg transition duration-300 hover:scale-[1.02] transform">
+                <div id="hours" class="text-4xl md:text-5xl font-mono font-bold text-pink-300">00</div>
+                <div class="text-sm uppercase tracking-wider mt-1 text-slate-400">Hours</div>
+            </div>
+
+            <!-- Minutes -->
+            <div class="text-center p-4 bg-slate-800 rounded-xl shadow-lg transition duration-300 hover:scale-[1.02] transform">
+                <div id="minutes" class="text-4xl md:text-5xl font-mono font-bold text-green-300">00</div>
+                <div class="text-sm uppercase tracking-wider mt-1 text-slate-400">Minutes</div>
+            </div>
+
+            <!-- Seconds -->
+            <div class="text-center p-4 bg-slate-800 rounded-xl shadow-lg transition duration-300 hover:scale-[1.02] transform">
+                <div id="seconds" class="text-4xl md:text-5xl font-mono font-bold text-cyan-300">00</div>
+                <div class="text-sm uppercase tracking-wider mt-1 text-slate-400">Seconds</div>
+            </div>
+        </div>
+
+        <!-- Target Date Display -->
+        <p id="target-date-display" class="text-center text-lg mt-8 text-primary-blue font-semibold"></p>
+    </div>
+
+    <script>
+        // Constants for time calculations
+        const SECOND = 1000;
+        const MINUTE = SECOND * 60;
+        const HOUR = MINUTE * 60;
+        const DAY = HOUR * 24;
+
+        // Get display elements
+        const display = {
+            days: document.getElementById('days'),
+            hours: document.getElementById('hours'),
+            minutes: document.getElementById('minutes'),
+            seconds: document.getElementById('seconds'),
+            target: document.getElementById('target-date-display'),
+            countdownGrid: document.getElementById('countdown-display'),
+            messageBox: document.getElementById('birthday-message'),
+            title: document.getElementById('main-title'),
+            subtitle: document.getElementById('main-subtitle')
+        };
+
+        let targetDate; // The next October 1st date object
+        let intervalId; // To store and clear the countdown timer
+
+        // Helper function to switch to birthday mode
+        function showCelebration() {
+            display.countdownGrid.classList.add('hidden');
+            display.target.classList.add('hidden');
+            display.subtitle.classList.add('hidden');
+            display.messageBox.classList.remove('hidden');
+            display.title.textContent = "🥳 Happy Birthday! 🥳";
+        }
+
+        // Helper function to switch to countdown mode
+        function hideCelebration() {
+            display.messageBox.classList.add('hidden');
+            display.countdownGrid.classList.remove('hidden');
+            display.target.classList.remove('hidden');
+            display.subtitle.classList.remove('hidden');
+            // UPDATED: Changed title text
+            display.title.textContent = "Time left till my Birthday";
+        }
+
+        /**
+         * Determines the next target date: October 1st (00:00:00).
+         * It checks if the current time is already October 2nd (00:00:00) or later, 
+         * and if so, sets the target for the following year.
+         * @returns {Date} The calculated target Date object.
+         */
+        function calculateTargetDate() {
+            const now = new Date();
+            const currentYear = now.getFullYear();
+            
+            // Target is October 1st at midnight (month 9 is Oct)
+            let target = new Date(currentYear, 9, 1, 0, 0, 0, 0); 
+            
+            // Rollover point is October 2nd at midnight
+            const rollover = new Date(currentYear, 9, 2, 0, 0, 0, 0); 
+            
+            // If the current time is AFTER October 2nd at midnight, we must target next year.
+            if (now.getTime() >= rollover.getTime()) { 
+                target = new Date(currentYear + 1, 9, 1, 0, 0, 0, 0);
+            }
+
+            // Update the display with the target year
+            display.target.textContent = `Target Date: October 1st, ${target.getFullYear()}`;
+            return target;
+        }
+
+        /**
+         * Updates the countdown display elements or shows the celebration message.
+         */
+        function updateCountdown() {
+            const nowTime = new Date().getTime();
+            let distance = targetDate.getTime() - nowTime;
+
+            // --- Check for Celebration or Rollover ---
+            if (distance <= 0) { 
+                // Target time (Oct 1st 00:00:00) has been reached.
+                
+                // Determine the end time of the celebration (Oct 2nd 00:00:00 of the target year)
+                const rolloverTime = new Date(targetDate.getFullYear(), 9, 2, 0, 0, 0, 0).getTime();
+                
+                if (nowTime < rolloverTime) {
+                    // It is currently October 1st: CELEBRATE!
+                    showCelebration();
+                    return; // Stop processing countdown values
+                } else {
+                    // It is October 2nd or later: ROLLOVER!
+                    console.log(`October 2nd reached. Recalculating target to next year.`);
+                    
+                    // Recalculate target for next year's Oct 1st.
+                    targetDate = calculateTargetDate(); 
+                    
+                    // Recalculate distance based on the new target for the fall-through logic
+                    distance = targetDate.getTime() - nowTime; 
+                    
+                    // Ensure normal view is active
+                    hideCelebration();
+                    
+                    // Fall through to display the new countdown
+                }
+            }
+            
+            // --- Normal Countdown Logic ---
+            hideCelebration(); // Ensure we are in countdown mode if we reached here
+            
+            // Calculate remaining time units
+            const days = Math.floor(distance / DAY);
+            const hours = Math.floor((distance % DAY) / HOUR);
+            const minutes = Math.floor((distance % HOUR) / MINUTE);
+            const seconds = Math.floor((distance % MINUTE) / SECOND);
+
+            // Update DOM elements, padding hours/minutes/seconds with leading zeros
+            display.days.textContent = String(days).padStart(3, '0');
+            display.hours.textContent = String(hours).padStart(2, '0');
+            display.minutes.textContent = String(minutes).padStart(2, '0');
+            display.seconds.textContent = String(seconds).padStart(2, '0');
+        }
+
+        // --- Initialization ---
+        window.onload = function () {
+            // 1. Set the initial target date
+            targetDate = calculateTargetDate();
+
+            // 2. Run the update immediately
+            updateCountdown();
+            
+            // 3. Set the interval to update every second
+            intervalId = setInterval(updateCountdown, 1000);
+            
+            console.log(`Countdown initialized. Next October 1st is set for: ${targetDate.toLocaleDateString()}`);
+        };
+
+    </script>
+</body>
+</html>
+
