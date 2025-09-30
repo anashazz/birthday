@@ -3,21 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Time left till my Birthday (Anas Hafeez/Me)</title>
+    <title>Time left till my Birthday</title>
+    
+    <!-- NEW: Favicon link added to use birthday-favicon.svg -->
+    <link rel="icon" type="image/svg+xml" href="birthday-favicon.svg">
+
     <!-- Load Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Configure Tailwind for the "Inter" font -->
+    <!-- Configure Tailwind for the "Inter" font and new light colors -->
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     fontFamily: {
-                        sans: ['comfortaa', 'sans-serif'],
+                        sans: ['Inter', 'sans-serif'], // Ensured Inter is used
                     },
                     colors: {
-                        'primary-blue': '#4c74f5',
-                        'dark-bg': '#0f172a',
-                        'dark-card': '#1e293b',
+                        // Light mode palette
+                        'primary-blue': '#1e40af', // Darker blue for light theme accent
+                        'light-bg': '#f3f4f6',    // Light gray background
+                        'light-card': '#ffffff',  // White card background
                     }
                 }
             }
@@ -28,20 +33,23 @@
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
     </style>
 </head>
-<!-- The h-screen class ensures the body uses the entire viewport height for a full-screen, centered effect. -->
-<body class="bg-dark-bg text-white font-sans h-screen flex items-center justify-center p-4">
+<!-- UPDATED: Switched background and text color for light mode -->
+<body class="bg-light-bg text-gray-900 font-sans h-screen flex items-center justify-center p-4">
 
     <!-- Main Container -->
-    <div class="w-full max-w-xl bg-dark-card p-8 md:p-10 rounded-2xl shadow-2xl border border-slate-700">
+    <!-- UPDATED: Switched card background and border for light mode, increased shadow -->
+    <div class="w-full max-w-xl bg-light-card p-8 md:p-10 rounded-2xl shadow-xl border border-gray-200">
         
         <h1 id="main-title" class="text-3xl md:text-4xl font-extrabold text-center mb-2 text-primary-blue">
             Time left till my Birthday
         </h1>
-        <p id="main-subtitle" class="text-center text-slate-400 mb-8 md:mb-10">
+        <!-- UPDATED: Subtitle color adjusted for light mode -->
+        <p id="main-subtitle" class="text-center text-gray-600 mb-8 md:mb-10">
             The next milestone is just around the corner!
         </p>
 
         <!-- Birthday Message (Initially Hidden) -->
+        <!-- The birthday message is still vibrant pink for contrast and celebration -->
         <div id="birthday-message" class="text-center p-8 bg-pink-600 rounded-xl shadow-2xl hidden">
             <p class="text-4xl md:text-5xl font-extrabold text-white mb-2">IT'S MY BIRTHDAY!</p>
             <p class="text-6xl md:text-7xl">🎉🎂🎁🥳</p>
@@ -51,27 +59,28 @@
         <div id="countdown-display" class="grid grid-cols-2 sm:grid-cols-4 gap-4">
             
             <!-- Days -->
-            <div class="text-center p-4 bg-slate-800 rounded-xl shadow-lg transition duration-300 hover:scale-[1.02] transform">
-                <div id="days" class="text-4xl md:text-5xl font-mono font-bold text-yellow-300">000</div>
-                <div class="text-sm uppercase tracking-wider mt-1 text-slate-400">Days</div>
+            <!-- UPDATED: Countdown tile background and label color adjusted for light mode -->
+            <div class="text-center p-4 bg-gray-100 rounded-xl shadow-md transition duration-300 hover:scale-[1.02] transform">
+                <div id="days" class="text-4xl md:text-5xl font-mono font-bold text-yellow-600">000</div>
+                <div class="text-sm uppercase tracking-wider mt-1 text-gray-700">Days</div>
             </div>
 
             <!-- Hours -->
-            <div class="text-center p-4 bg-slate-800 rounded-xl shadow-lg transition duration-300 hover:scale-[1.02] transform">
-                <div id="hours" class="text-4xl md:text-5xl font-mono font-bold text-pink-300">00</div>
-                <div class="text-sm uppercase tracking-wider mt-1 text-slate-400">Hours</div>
+            <div class="text-center p-4 bg-gray-100 rounded-xl shadow-md transition duration-300 hover:scale-[1.02] transform">
+                <div id="hours" class="text-4xl md:text-5xl font-mono font-bold text-pink-600">00</div>
+                <div class="text-sm uppercase tracking-wider mt-1 text-gray-700">Hours</div>
             </div>
 
             <!-- Minutes -->
-            <div class="text-center p-4 bg-slate-800 rounded-xl shadow-lg transition duration-300 hover:scale-[1.02] transform">
-                <div id="minutes" class="text-4xl md:text-5xl font-mono font-bold text-green-300">00</div>
-                <div class="text-sm uppercase tracking-wider mt-1 text-slate-400">Minutes</div>
+            <div class="text-center p-4 bg-gray-100 rounded-xl shadow-md transition duration-300 hover:scale-[1.02] transform">
+                <div id="minutes" class="text-4xl md:text-5xl font-mono font-bold text-green-600">00</div>
+                <div class="text-sm uppercase tracking-wider mt-1 text-gray-700">Minutes</div>
             </div>
 
             <!-- Seconds -->
-            <div class="text-center p-4 bg-slate-800 rounded-xl shadow-lg transition duration-300 hover:scale-[1.02] transform">
-                <div id="seconds" class="text-4xl md:text-5xl font-mono font-bold text-cyan-300">00</div>
-                <div class="text-sm uppercase tracking-wider mt-1 text-slate-400">Seconds</div>
+            <div class="text-center p-4 bg-gray-100 rounded-xl shadow-md transition duration-300 hover:scale-[1.02] transform">
+                <div id="seconds" class="text-4xl md:text-5xl font-mono font-bold text-cyan-600">00</div>
+                <div class="text-sm uppercase tracking-wider mt-1 text-gray-700">Seconds</div>
             </div>
         </div>
 
@@ -215,4 +224,3 @@
     </script>
 </body>
 </html>
-
